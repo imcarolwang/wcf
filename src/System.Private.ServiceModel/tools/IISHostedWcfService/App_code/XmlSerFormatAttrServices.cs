@@ -11,6 +11,8 @@ namespace WcfService
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class RpcEncSingleNsService : ICalculator
     {
+        public IntParams IntParam { get; set; }
+
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public int Sum2(int i, int j)
@@ -22,48 +24,57 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public int Sum(IntParams par)
         {
-            return par.p1 + par.p2;
+            return par.P1 + par.P2;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public float Divide(FloatParams par)
         {
-            return (float)(par.p1 / par.p2);
+            return (float)(par.P1 / par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public string Concatenate(IntParams par)
         {
-            return string.Format("{0}{1}", par.p1, par.p2);
+            return string.Format("{0}{1}", par.P1, par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public void DoSomething(IntParams par)
+        public void SetIntParamsProperty(IntParams par)
         {
-            Console.WriteLine("From RpcEncSingleNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
+            IntParam = par;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public DateTime GetCurrentDateTime()
+        public IntParams GetIntParamsProperty()
         {
-            return DateTime.Now;
+            return IntParam;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+        public DateTime ReturnInputDateTime(DateTime dt)
+        {
+            return dt;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public byte[] CreateSet(ByteParams par)
         {
-            return new byte[] { par.p1, par.p2 };
+            return new byte[] { par.P1, par.P2 };
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class RpcLitSingleNsService : ICalculator
     {
+        public IntParams IntParam { get; set; }
+
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public int Sum2(int i, int j)
@@ -75,48 +86,57 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
-            return par.p1 + par.p2;
+            return par.P1 + par.P2;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public float Divide(FloatParams par)
         {
-            return (float)(par.p1 / par.p2);
+            return (float)(par.P1 / par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public string Concatenate(IntParams par)
         {
-            return string.Format("{0}{1}", par.p1, par.p2);
+            return string.Format("{0}{1}", par.P1, par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public void DoSomething(IntParams par)
+        public void SetIntParamsProperty(IntParams par)
         {
-            Console.WriteLine("From RpcLitSingleNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
+            IntParam = par;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public DateTime GetCurrentDateTime()
+        public IntParams GetIntParamsProperty()
         {
-            return DateTime.Now;
+            return IntParam;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+        public DateTime ReturnInputDateTime(DateTime dt)
+        {
+            return dt;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public byte[] CreateSet(ByteParams par)
         {
-            return new byte[] { par.p1, par.p2 };
+            return new byte[] { par.P1, par.P2 };
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class DocLitSingleNsService : ICalculator
     {
+        public IntParams IntParam { get; set; }
+
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public int Sum2(int i, int j)
@@ -128,48 +148,58 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
-            return par.p1 + par.p2;
+            return par.P1 + par.P2;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public float Divide(FloatParams par)
         {
-            return (float)(par.p1 / par.p2);
+            return (float)(par.P1 / par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public string Concatenate(IntParams par)
         {
-            return string.Format("{0}{1}", par.p1, par.p2);
+            return string.Format("{0}{1}", par.P1, par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public void DoSomething(IntParams par)
+        public void SetIntParamsProperty(IntParams par)
         {
-            Console.WriteLine("From DocLitSingleNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
+            IntParam = par;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public DateTime GetCurrentDateTime()
+        public IntParams GetIntParamsProperty()
         {
-            return DateTime.Now;
+            return IntParam;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+        public DateTime ReturnInputDateTime(DateTime dt)
+        {
+            return dt;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public byte[] CreateSet(ByteParams par)
         {
-            return new byte[] { par.p1, par.p2 };
+            return new byte[] { par.P1, par.P2 };
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
-    public class RpcEncMultiNsService : ICalculator, IHelloWorld
+    public class RpcEncDualNsService : ICalculator, IHelloWorld
     {
+        public IntParams IntParam { get; set; }
+        public string StringParam { get; set; }
+
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public int Sum2(int i, int j)
@@ -181,55 +211,72 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public int Sum(IntParams par)
         {
-            return par.p1 + par.p2;
+            return par.P1 + par.P2;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public float Divide(FloatParams par)
         {
-            return (float)(par.p1 / par.p2);
+            return (float)(par.P1 / par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public string Concatenate(IntParams par)
         {
-            return string.Format("{0}{1}", par.p1, par.p2);
+            return string.Format("{0}{1}", par.P1, par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public void DoSomething(IntParams par)
+        public void SetIntParamsProperty(IntParams par)
         {
-            Console.WriteLine("From RpcEncMultiNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
+            IntParam = par;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public DateTime GetCurrentDateTime()
+        public IntParams GetIntParamsProperty()
         {
-            return DateTime.Now;
+            return IntParam;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+        public DateTime ReturnInputDateTime(DateTime dt)
+        {
+            return dt;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public byte[] CreateSet(ByteParams par)
         {
-            return new byte[] { par.p1, par.p2 };
+            return new byte[] { par.P1, par.P2 };
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public void SayHello(string name)
+        public void SetStringParam(string testString)
         {
-            Console.WriteLine("From RpcLitMultiNsService, inside SayHello method, you entered: {0}", name);
+            StringParam = testString;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+        public string GetStringProperty()
+        {
+            return StringParam;
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
-    public class RpcLitMultiNsService : ICalculator, IHelloWorld
+    public class RpcLitDualNsService : ICalculator, IHelloWorld
     {
+        public IntParams IntParam { get; set; }
+        public string StringParam { get; set; }
+
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public int Sum2(int i, int j)
@@ -241,55 +288,72 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
-            return par.p1 + par.p2;
+            return par.P1 + par.P2;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public float Divide(FloatParams par)
         {
-            return (float)(par.p1 / par.p2);
+            return (float)(par.P1 / par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public string Concatenate(IntParams par)
         {
-            return string.Format("{0}{1}", par.p1, par.p2);
+            return string.Format("{0}{1}", par.P1, par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public void DoSomething(IntParams par)
+        public void SetIntParamsProperty(IntParams par)
         {
-            Console.WriteLine("From RpcLitMultiNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
+            IntParam = par;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public DateTime GetCurrentDateTime()
+        public IntParams GetIntParamsProperty()
         {
-            return DateTime.Now;
+            return IntParam;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+        public DateTime ReturnInputDateTime(DateTime dt)
+        {
+            return dt;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public byte[] CreateSet(ByteParams par)
         {
-            return new byte[] { par.p1, par.p2 };
+            return new byte[] { par.P1, par.P2 };
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public void SayHello(string name)
+        public void SetStringParam(string testString)
         {
-            Console.WriteLine("From RpcLitMultiNsService, inside SayHello method, you entered: {0}", name);
+            StringParam = testString;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+        public string GetStringProperty()
+        {
+            return StringParam;
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
-    public class DocLitMultiNsService : ICalculator, IHelloWorld
+    public class DocLitDualNsService : ICalculator, IHelloWorld
     {
+        public IntParams IntParam { get; set; }
+        public string StringParam { get; set; }
+
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public int Sum2(int i, int j)
@@ -301,49 +365,63 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
-            return par.p1 + par.p2;
+            return par.P1 + par.P2;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public float Divide(FloatParams par)
         {
-            return (float)(par.p1 / par.p2);
+            return (float)(par.P1 / par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public string Concatenate(IntParams par)
         {
-            return string.Format("{0}{1}", par.p1, par.p2);
+            return string.Format("{0}{1}", par.P1, par.P2);
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public void DoSomething(IntParams par)
+        public void SetIntParamsProperty(IntParams par)
         {
-            Console.WriteLine("From DocLitMultiNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
+            IntParam = par;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public DateTime GetCurrentDateTime()
+        public IntParams GetIntParamsProperty()
         {
-            return DateTime.Now;
+            return IntParam;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+        public DateTime ReturnInputDateTime(DateTime dt)
+        {
+            return dt;
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public byte[] CreateSet(ByteParams par)
         {
-            return new byte[] { par.p1, par.p2 };
+            return new byte[] { par.P1, par.P2 };
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public void SayHello(string name)
+        public void SetStringProperty(string testString)
         {
-            Console.WriteLine("From DocLitMultiNsService, inside SayHello method, you entered: {0}", name);
+            StringParam = testString;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+        public string GetStringProperty()
+        {
+            return StringParam;
         }
     }
 }

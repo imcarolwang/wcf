@@ -44,12 +44,12 @@ namespace SelfHostedWCFService
             CreateHost<BasicHttpTestServiceHost, WcfService.WcfService>("BasicHttp.svc", httpBaseAddress);
             CreateHost<BasicHttpTestServiceHost_4_4_0, WcfService_4_4_0>("BasicHttp_4_4_0.svc", httpBaseAddress);            
             CreateHost<BasicHttpSoapTestServiceHost, WcfSoapService>("BasicHttpSoap.svc", httpBaseAddress);
-            CreateHost<RpcEncSingleNsServiceHost, RpcEncSingleNsService>("BasicHttpRpcEncSingleNs.svc", httpBaseAddress);
-            CreateHost<RpcLitSingleNsServiceHost, RpcLitSingleNsService>("BasicHttpRpcLitSingleNs.svc", httpBaseAddress);
-            CreateHost<DocLitSingleNsServiceHost, DocLitSingleNsService>("BasicHttpDocLitSingleNs.svc", httpBaseAddress);
-            CreateHost<RpcEncMultiNsServiceHost, RpcEncMultiNsService>("BasicHttpRpcEncMultiNs.svc", httpBaseAddress);
-            CreateHost<RpcLitMultiNsServiceHost, RpcLitMultiNsService>("BasicHttpRpcLitMultiNs.svc", httpBaseAddress);
-            CreateHost<DocLitMultiNsServiceHost, DocLitMultiNsService>("BasicHttpDocLitMultiNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorServiceHost, RpcEncSingleNsService>("BasicHttpRpcEncSingleNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorServiceHost, RpcLitSingleNsService>("BasicHttpRpcLitSingleNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorServiceHost, DocLitSingleNsService>("BasicHttpDocLitSingleNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorServiceHost, RpcEncDualNsService>("BasicHttpRpcEncDualNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorServiceHost, RpcLitDualNsService>("BasicHttpRpcLitDualNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorServiceHost, DocLitDualNsService>("BasicHttpDocLitDualNs.svc", httpBaseAddress);
             CreateHost<CustomTextEncoderBufferedTestServiceHost,WcfService.WcfService>("CustomTextEncoderBuffered.svc", httpBaseAddress);
             CreateHost<CustomTextEncoderStreamedTestServiceHost, WcfService.WcfService>("CustomTextEncoderStreamed.svc", httpBaseAddress);
             CreateHost<DefaultCustomHttpTestServiceHost, WcfService.WcfService>("DefaultCustomHttp.svc", httpBaseAddress);

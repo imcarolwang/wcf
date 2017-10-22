@@ -72,13 +72,33 @@ public static partial class XmlSerializerFormatTests
 
     [WcfFact]
     [OuterLoop]
-    public static void XmlSFAttributeWsdlTest()
+    public static void XmlSFAttributeRpcEncSingleNsTest()
     {
         RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address);
+    }
+
+    public static void XmlSFAttributeRpcLitSingleNsTest()
+    {
         RunVariation(Endpoints.BasicHttpRpcLitSingleNs_Address);
-        RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address);
+    }
+
+    public static void XmlSFAttributeDocLitSingleNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address);        
+    }
+
+    public static void XmlSFAttributeRpcEncMultiNTest()
+    {
         RunVariation(Endpoints.BasicHttpRpcEncMultiNs_Address, true);
+    }
+
+    public static void XmlSFAttributeRpcLitMultiNsTest()
+    {
         RunVariation(Endpoints.BasicHttpRpcLitMultiNs_Address, true);
+    }
+
+    public static void XmlSFAttributeDocLitMultiNsTest()
+    {
         RunVariation(Endpoints.BasicHttpDocLitMultiNs_Address, true);
     }
 
@@ -105,6 +125,7 @@ public static partial class XmlSerializerFormatTests
         // *** EXECUTE Variation *** \\
         try
         {
+            string testStr = "test string";
             var intParam = new IntParams() { p1 = 5, p2 = 10 };
             var floatParam = new FloatParams() { p1 = 5.0f, p2 = 10.0f };
             var byteParam = new ByteParams() { p1 = 5, p2 = 10 };
@@ -115,11 +136,14 @@ public static partial class XmlSerializerFormatTests
             Assert.Equal((float)(floatParam.p1 / floatParam.p2), serviceProxy1.Divide(floatParam));
             Assert.Equal((new byte[] { byteParam.p1, byteParam.p2 }), serviceProxy1.CreateSet(byteParam));
             Assert.Equal(DateTime.Now.Date, serviceProxy1.GetCurrentDateTime().Date);
-            serviceProxy1.DoSomething(intParam);
-
+            
+            serviceProxy1.SetIntParamsProperty(intParam);
+            Assert.Equal(intParam, serviceProxy1.GetIntParamsProperty());
+            
             if (isMultiNs)
             {
-                serviceProxy2.SayHello("test string");
+                serviceProxy2.SetStringProperty(testStr);
+                Assert.Equal(testStr, serviceProxy2.GetStringProperty());
             }
         }
         catch (Exception ex)
