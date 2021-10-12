@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Text;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

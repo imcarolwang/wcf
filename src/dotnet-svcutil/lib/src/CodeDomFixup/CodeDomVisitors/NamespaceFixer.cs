@@ -11,7 +11,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class NamespaceFixup : CodeDomVisitor
     {
-        private static string s_microsoftXml = "Microsoft.Xml";
+        private static string s_microsoftXml = "System.Xml";
         private static string s_systemXml = "System.Xml";
         private static string s_microsoftCodeDom = "Microsoft.CodeDom";
         private static string s_systemCodeDom = "System.CodeDom";
@@ -20,8 +20,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public NamespaceFixup()
         {
-            // Microsoft.Xml.dll
-            var msxmlTypes = TypeLoader.LoadTypes(typeof(Microsoft.Xml.XmlDocument).GetTypeInfo().Assembly, Verbosity.Silent);
+            // System.Xml.dll
+            var msxmlTypes = TypeLoader.LoadTypes(typeof(System.Xml.XmlDocument).GetTypeInfo().Assembly, Verbosity.Silent);
             foreach (var type in msxmlTypes)
             {
                 if (type.FullName.Contains(s_microsoftXml))

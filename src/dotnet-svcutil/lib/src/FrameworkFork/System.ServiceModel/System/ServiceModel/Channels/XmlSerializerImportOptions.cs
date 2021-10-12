@@ -15,9 +15,9 @@ namespace System.ServiceModel.Channels
     using System.Text;
     using System.ServiceModel;
     using System.Runtime.Serialization;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
     using WsdlNS = System.Web.Services.Description;
 
     public class XmlSerializerImportOptions

@@ -3,12 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.Xml;
+//using System.Xml;
 using System.ServiceModel;
-using Microsoft.Xml.Serialization;
+//using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel.Description;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -69,7 +71,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        public override void WriteObject(XmlDictionaryWriter writer, object graph)
+        public override void WriteObject(Xml.XmlDictionaryWriter writer, object graph)
         {
             if (_isSerializerSetExplicit)
                 _serializer.Serialize(writer, new object[] { graph });

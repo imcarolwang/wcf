@@ -3,11 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 using StringHandle = System.Int64;
-using Microsoft.Xml;
+using System.Xml;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

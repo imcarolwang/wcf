@@ -5,7 +5,7 @@
 using System.Runtime.Serialization;
 using System.Globalization;
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

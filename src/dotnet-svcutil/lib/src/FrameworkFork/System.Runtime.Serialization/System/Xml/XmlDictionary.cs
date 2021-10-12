@@ -4,7 +4,7 @@
 
 using System;
 using System.IO;
-using Microsoft.Xml;
+using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Runtime.Serialization;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     public class XmlDictionary : IXmlDictionary
     {

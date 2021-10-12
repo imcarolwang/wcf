@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     using System;
 

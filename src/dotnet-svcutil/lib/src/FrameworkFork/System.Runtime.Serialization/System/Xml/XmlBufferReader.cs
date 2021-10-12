@@ -4,7 +4,7 @@
 
 using System;
 using System.IO;
-using Microsoft.Xml;
+using System.Xml;
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     internal class XmlBufferReader
     {

@@ -18,9 +18,9 @@ namespace System.ServiceModel.Description
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Diagnostics;
-    using Microsoft.Xml;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
     using WsdlNS = System.Web.Services.Description;
 
     internal class MessageContractImporter

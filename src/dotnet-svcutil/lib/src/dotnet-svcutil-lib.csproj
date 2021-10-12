@@ -78,11 +78,6 @@
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>SRSerialization</ClassName>
     </EmbeddedResource>
-    <EmbeddedResource Update="FrameworkFork\Microsoft.Xml\ResXml.resx">
-      <GenerateSource>true</GenerateSource>
-      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
-      <ClassName>ResXml</ClassName>
-    </EmbeddedResource>
     <EmbeddedResource Update="FrameworkFork\System.ServiceModel\Resources\SRServiceModel.resx">
       <GenerateSource>true</GenerateSource>
       <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>

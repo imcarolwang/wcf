@@ -5,7 +5,7 @@
 using System;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     internal abstract class ArrayHelper<TArgument, TArray>
     {

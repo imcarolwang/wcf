@@ -4,10 +4,10 @@
 
 namespace System.Web.Services.Description
 {
-    using Microsoft.Xml;
+    using System.Xml;
     using System.IO;
-    using Microsoft.Xml.Schema;
-    using Microsoft.Xml.Serialization;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
     using System.ComponentModel;
     using System.Text;
     using System.Web.Services.Configuration;

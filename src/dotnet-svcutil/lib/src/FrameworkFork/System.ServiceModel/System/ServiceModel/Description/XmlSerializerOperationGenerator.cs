@@ -9,7 +9,7 @@ using System.ServiceModel.Dispatcher;
 using Microsoft.CodeDom;
 using System.Globalization;
 using System.Text;
-using Microsoft.Xml.Serialization;
+using System.Xml.Serialization;
 using Microsoft.CodeDom.Compiler;
 using System.Runtime.Serialization;
 using System.Reflection;
@@ -143,7 +143,7 @@ namespace System.ServiceModel.Description
             XmlSerializerFormatAttribute xmlSerializerFormatAttribute = (xmlSerializerOperationBehavior == null) ? new XmlSerializerFormatAttribute() : xmlSerializerOperationBehavior.XmlSerializerFormatAttribute;
             OperationFormatStyle style = xmlSerializerFormatAttribute.Style;
             _operationGenerator.GenerateOperation(context, ref style, xmlSerializerFormatAttribute.IsEncoded, new WrappedBodyTypeGenerator(context), new Dictionary<MessagePartDescription, ICollection<CodeTypeReference>>());
-            context.ServiceContractGenerator.AddReferencedAssembly(typeof(Microsoft.Xml.Serialization.XmlTypeAttribute).GetTypeInfo().Assembly);
+            context.ServiceContractGenerator.AddReferencedAssembly(typeof(System.Xml.Serialization.XmlTypeAttribute).GetTypeInfo().Assembly);
             xmlSerializerFormatAttribute.Style = style;
             context.SyncMethod.CustomAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, xmlSerializerFormatAttribute));
             AddKnownTypes(context.SyncMethod.CustomAttributes, xmlSerializerFormatAttribute.IsEncoded ? SoapExporter.IncludeMetadata : XmlExporter.IncludeMetadata);

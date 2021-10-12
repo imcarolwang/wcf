@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics;
 
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     internal enum PrefixHandleType
     {

@@ -13,8 +13,8 @@ using System.Security;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-using Microsoft.Xml;
-using Microsoft.Xml.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Description
 {

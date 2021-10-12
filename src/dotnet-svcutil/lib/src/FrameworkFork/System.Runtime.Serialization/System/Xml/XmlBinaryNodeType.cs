@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Xml
+namespace System.Xml
 {
     // Element           => StartElement Attribute* Content EndElement
     //                    | StartElement Attribute* Text // Text must be WithEndElement
