@@ -112,6 +112,35 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return _referenceGroup;
             }
         }
+
+        private XElement _packageReferenceGroup;
+        private XElement PacakgeReferenceGroup
+        {
+            get
+            {
+                if (_packageReferenceGroup == null)
+                {
+                    IEnumerable<XElement> refItems = this.ProjectNode.Elements("PackageReference");
+                    if (refItems == null || refItems.Count() == 0)
+                    {
+                        // add ref subgroup
+                        _packageReferenceGroup = new XElement("ItemGroup");
+                        this.ProjectNode.Add(_packageReferenceGroup);
+                    }
+                    else
+                    {
+                        _packageReferenceGroup = refItems.FirstOrDefault().Parent;
+                    }
+
+                    FrameworkInfo fxInfo = null;
+                    if (this.TargetFrameworks.Count() > 1 && this.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out fxInfo) && !fxInfo.IsDnx))
+                    {
+                        _packageReferenceGroup.Add(new XAttribute("Condition", $"'$(TargetFramework)' != '{fxInfo.FullName}'"));   
+                    }
+                }
+                return _packageReferenceGroup;
+            }
+        }
         #endregion
 
         #region Parsing/Settings Methods
@@ -475,10 +504,21 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         this.ProjectReferceGroup.Add(new XElement("ProjectReference", new XAttribute("Include", dependency.FullPath)));
                         break;
                     case ProjectDependencyType.Binary:
-                        this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
+                        if (this.TargetFrameworks.Count() >= 1 && dependency.Name.Equals(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault().Name))
+                        {
+                            FrameworkInfo fxInfo = null;
+                            if (this.TargetFrameworks.Any(t => FrameworkInfo.TryParse(t, out fxInfo) && !fxInfo.IsDnx))
+                            {
+                                this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Condition", $"'$(TargetFramework)' == '{fxInfo.FullName}'"), new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
+                            }
+                        }
+                        else
+                        {
+                            this.ReferenceGroup.Add(new XElement("Reference", new XAttribute("Include", dependency.AssemblyName), new XElement("HintPath", dependency.FullPath)));
+                        }
                         break;
                     case ProjectDependencyType.Package:
-                        this.ReferenceGroup.Add(new XElement("PackageReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));
+                        this.PacakgeReferenceGroup.Add(new XElement("PackageReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));
                         break;
                     case ProjectDependencyType.Tool:
                         this.ReferenceGroup.Add(new XElement("DotNetCliToolReference", new XAttribute("Include", dependency.Name), new XAttribute("Version", dependency.Version)));

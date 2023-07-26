@@ -286,12 +286,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         needSave |= project.AddDependency(dep);
                     }
 
+                    if (project.TargetFrameworks.Count() > 1 && project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out FrameworkInfo fxInfo) && !fxInfo.IsDnx))
+                    {
+                        FrameworkInfo fxInfo = null;
+                        if (project.TargetFrameworks.Any(t => TargetFrameworkHelper.IsSupportedFramework(t, out fxInfo) && fxInfo.IsDnx && fxInfo.Version.Major >= 6))
+                        {
+                            needSave |= project.AddDependency(TargetFrameworkHelper.FullFrameworkReferences.FirstOrDefault());
+                        }
+                    }
+
                     if (needSave)
                     {
                         await project.SaveAsync(options.Logger, cancellationToken).ConfigureAwait(false);
                     }
+
                     return true;
-                }
+                }                
             }
             catch
             {
