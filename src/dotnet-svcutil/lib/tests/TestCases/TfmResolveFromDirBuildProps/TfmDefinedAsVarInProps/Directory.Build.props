@@ -1,0 +1,5 @@
+<Project>
+	<PropertyGroup>
+		<DefaultTFM>net6.0</DefaultTFM>
+	</PropertyGroup>
+</Project>
