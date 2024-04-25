@@ -34,6 +34,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 visitors = AddSyncVisitors(visitors);
             }
 
+            if (options.CancellationTokenParam == true)
+            {
+                visitors = AcceptCancellationTokenToAsyncOpVistor(visitors);
+            }
+
             return visitors;
         }
 
@@ -53,6 +58,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new RemoveSyncMethodsFromClientClass()
             });
 
+            return list.ToArray();
+        }
+
+        private static CodeDomVisitor[] AcceptCancellationTokenToAsyncOpVistor(CodeDomVisitor[] visitors)
+        {
+            List<CodeDomVisitor> list = new List<CodeDomVisitor>(visitors);
+            list.Add(new AcceptCancellationTokenToAsyncOperation());
             return list.ToArray();
         }
     }

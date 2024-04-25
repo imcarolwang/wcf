@@ -248,5 +248,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 &&
                 name.Split('.').All(namespacePart => new CSharpCodeProvider().IsValidIdentifier(namespacePart));
         }
+
+        public static CodeMemberMethod Clone(this CodeMemberMethod originalMethod)
+        {
+            var clonedMethod = new CodeMemberMethod();
+
+            // Copying properties
+            clonedMethod.Attributes = originalMethod.Attributes;
+            clonedMethod.Comments.AddRange(originalMethod.Comments);
+            clonedMethod.CustomAttributes.AddRange(originalMethod.CustomAttributes);
+            clonedMethod.LinePragma = originalMethod.LinePragma;
+            clonedMethod.Name = originalMethod.Name;
+            clonedMethod.ReturnType = originalMethod.ReturnType;
+            clonedMethod.PrivateImplementationType = originalMethod.PrivateImplementationType;
+            clonedMethod.Statements.AddRange(originalMethod.Statements);
+            clonedMethod.TypeParameters.AddRange(originalMethod.TypeParameters);
+            foreach (CodeParameterDeclarationExpression parameter in originalMethod.Parameters)
+            {
+                clonedMethod.Parameters.Add(new CodeParameterDeclarationExpression(parameter.Type, parameter.Name));
+            }
+
+            return clonedMethod;
+        }
     }
 }
