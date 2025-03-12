@@ -153,7 +153,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 await this.metadataDocumentLoader.LoadAsync(cancellationToken).ConfigureAwait(false);
             }
 
-            bool useMessageFormat = ServiceDescriptor.DefaultUseMessageFormat;
+            bool useMessageFormat = IsWcfSoapService() == true ? ServiceDescriptor.DefaultUseMessageFormat : !ServiceDescriptor.DefaultUseMessageFormat;
             bool importSuccess = false;
             WsdlImporter wsdlImporter;
 
@@ -251,6 +251,38 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     return true;
                 }
             }
+            return false;
+        }
+
+        public bool IsWcfSoapService()
+        {
+            CheckMetadataImported();
+            return this.metadataDocumentLoader.MetadataSections.Select((s) => s.Metadata).OfType<WsdlNS.ServiceDescription>().Any((wsdl) => IsWcfSoapService(wsdl));
+        }
+
+        private static bool IsWcfSoapService(WsdlNS.ServiceDescription wsdl)
+        {
+            foreach (WsdlNS.Binding binding in wsdl.Bindings)
+            {
+                var soapBinding = binding.Extensions.OfType<WsdlNS.SoapBinding>().FirstOrDefault();
+                if (soapBinding != null)
+                {
+                    var operations = binding.Operations.Cast<WsdlNS.OperationBinding>();
+
+                    // Check if there's any RPC/Encoded usage
+                    if (operations
+                        .SelectMany(op => op.Input.Extensions.OfType<WsdlNS.SoapBodyBinding>())
+                        .Any(body => soapBinding.Style == WsdlNS.SoapBindingStyle.Rpc &&
+                                     body.Use == WsdlNS.SoapBindingUse.Encoded))
+                    {
+                        return false; // Not a WCF-style service
+                    }
+
+                    // Default behavior remains unchanged (assumes WCF uses Document/Literal)
+                    return true;
+                }
+            }
+            
             return false;
         }
 
