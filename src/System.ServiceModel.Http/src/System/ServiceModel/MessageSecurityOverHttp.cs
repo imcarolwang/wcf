@@ -5,6 +5,7 @@
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
 
 namespace System.ServiceModel
 {
@@ -80,7 +81,8 @@ namespace System.ServiceModel
                     case MessageCredentialType.Windows:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
                     case MessageCredentialType.IssuedToken:
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+                        oneShotSecurity = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(IssuedSecurityTokenParameters.CreateInfoCardParameters(new SecurityStandardsManager(new WSSecurityTokenSerializer(true)), this.AlgorithmSuite));
+                        break;
                     default:
                         Fx.Assert("unknown ClientCredentialType");
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());

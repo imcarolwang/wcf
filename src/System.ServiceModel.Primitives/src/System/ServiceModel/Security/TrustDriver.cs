@@ -140,5 +140,11 @@ namespace System.ServiceModel.Security
 
         // RSTR Collection method
         public abstract void WriteRequestSecurityTokenResponseCollection(RequestSecurityTokenResponseCollection rstrCollection, XmlWriter writer);
+
+        // Federation proxy creation
+        public abstract XmlElement CreateSignWithElement(string signatureAlgorithm);
+        public abstract XmlElement CreateEncryptWithElement(string encryptionAlgorithm);
+        public abstract XmlElement CreateEncryptionAlgorithmElement(string encryptionAlgorithm);
+        public abstract XmlElement CreateCanonicalizationAlgorithmElement(string canonicalicationAlgorithm);
     }
 }

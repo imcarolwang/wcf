@@ -1264,6 +1264,58 @@ namespace System.ServiceModel.Security
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SRP.Format(SRP.EntropyModeCannotHaveRequestorEntropy, mode)));
                 }
             }
+
+            public override XmlElement CreateSignWithElement(string signatureAlgorithm)
+            {
+                if (signatureAlgorithm == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("signatureAlgorithm");
+                }
+                XmlDocument doc = new XmlDocument();
+                XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.SignWith.Value,
+                    this.DriverDictionary.Namespace.Value);
+                result.AppendChild(doc.CreateTextNode(signatureAlgorithm));
+                return result;
+            }
+
+            public override XmlElement CreateEncryptWithElement(string encryptionAlgorithm)
+            {
+                if (encryptionAlgorithm == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("encryptionAlgorithm");
+                }
+                XmlDocument doc = new XmlDocument();
+                XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.EncryptWith.Value,
+                    this.DriverDictionary.Namespace.Value);
+                result.AppendChild(doc.CreateTextNode(encryptionAlgorithm));
+                return result;
+            }
+
+            public override XmlElement CreateEncryptionAlgorithmElement(string encryptionAlgorithm)
+            {
+                if (encryptionAlgorithm == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("encryptionAlgorithm");
+                }
+                XmlDocument doc = new XmlDocument();
+                XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.EncryptionAlgorithm.Value,
+                    this.DriverDictionary.Namespace.Value);
+                result.AppendChild(doc.CreateTextNode(encryptionAlgorithm));
+                return result;
+            }
+
+            public override XmlElement CreateCanonicalizationAlgorithmElement(string algorithm)
+            {
+                if (algorithm == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("algorithm");
+                }
+                XmlDocument doc = new XmlDocument();
+                XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.CanonicalizationAlgorithm.Value,
+                    this.DriverDictionary.Namespace.Value);
+                result.AppendChild(doc.CreateTextNode(algorithm));
+                return result;
+            }
         }
     }
 }

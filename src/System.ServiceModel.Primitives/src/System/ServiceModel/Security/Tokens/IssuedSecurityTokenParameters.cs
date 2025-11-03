@@ -16,6 +16,8 @@ namespace System.ServiceModel.Security.Tokens
     {
         internal const SecurityKeyType DefaultKeyType = SecurityKeyType.SymmetricKey;
         internal const bool DefaultUseStrTransform = false;
+        const string WsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
+        static readonly string s_wsidPPIClaim = string.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", WsidNamespace);
 
         internal struct AlternativeIssuerEndpoint
         {
@@ -76,6 +78,49 @@ namespace System.ServiceModel.Security.Tokens
             TokenType = tokenType;
             IssuerAddress = issuerAddress;
             IssuerBinding = issuerBinding;
+        }
+
+        internal static IssuedSecurityTokenParameters CreateInfoCardParameters(SecurityStandardsManager standardsManager, SecurityAlgorithmSuite algorithm)
+        {
+            IssuedSecurityTokenParameters result = new IssuedSecurityTokenParameters(SecurityXXX2005Strings.SamlTokenType);
+            result.KeyType = SecurityKeyType.AsymmetricKey;
+            result.ClaimTypeRequirements.Add(new ClaimTypeRequirement(s_wsidPPIClaim));
+            result.IssuerAddress = null;
+            result.AddAlgorithmParameters(algorithm, standardsManager, result.KeyType);
+            return result;
+        }
+
+        internal void AddAlgorithmParameters(SecurityAlgorithmSuite algorithmSuite, SecurityStandardsManager standardsManager, SecurityKeyType issuedKeyType)
+        {
+            this.AdditionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptionAlgorithmElement(algorithmSuite.DefaultEncryptionAlgorithm));
+            this.AdditionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateCanonicalizationAlgorithmElement(algorithmSuite.DefaultCanonicalizationAlgorithm));
+
+            if (this.KeyType == SecurityKeyType.BearerKey)
+            {
+                // As the client does not have a proof token in the Bearer case
+                // we don't have any specific algorithms to request for.
+                return;
+            }
+
+            string signWithAlgorithm = (this.KeyType == SecurityKeyType.SymmetricKey) ? algorithmSuite.DefaultSymmetricSignatureAlgorithm : algorithmSuite.DefaultAsymmetricSignatureAlgorithm;
+            this.AdditionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateSignWithElement(signWithAlgorithm));
+            string encryptWithAlgorithm;
+            if (issuedKeyType == SecurityKeyType.SymmetricKey)
+            {
+                encryptWithAlgorithm = algorithmSuite.DefaultEncryptionAlgorithm;
+            }
+            else
+            {
+                encryptWithAlgorithm = algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm;
+            }
+            this.AdditionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptWithElement(encryptWithAlgorithm));
+
+            if (standardsManager.MessageSecurityVersion.TrustVersion != TrustVersion.WSTrustFeb2005)
+            {
+                this.AdditionalRequestParameters.Insert(0, ((WSTrustDec2005.DriverDec2005)standardsManager.TrustDriver).CreateKeyWrapAlgorithmElement(algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm));
+            }
+
+            return;
         }
 
         internal protected override bool HasAsymmetricKey { get { return KeyType == SecurityKeyType.AsymmetricKey; } }
