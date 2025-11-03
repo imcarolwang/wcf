@@ -4,6 +4,8 @@
 
 using System;
 using System.IO;
+using Microsoft.Tools.ServiceModel.Svcutil;
+using System.Threading;
 using Xunit;
 
 namespace SvcutilTest
@@ -140,6 +142,39 @@ namespace SvcutilTest
             var input = $"{paramsFilePath} {extraOptions}";
 
             TestGlobalSvcutil(input, expectSuccess: true);
+        }
+
+        [Trait("Category", "BVT")]
+        [Theory]
+        [InlineData("TfmDefinedInProps")]
+        [InlineData("TfmDefinedAsVarInProps")]
+        public void TfmResolveFromDirBuildProps(string testCaseName)
+        {
+            this_TestCaseName = "TfmResolveFromDirBuildProps";
+            TestFixture();
+            //InitializeGlobal(testCaseName);
+
+            this_TestCaseBaselinesDir = Path.Combine(this_TestGroupBaselinesDir, testCaseName);
+            Directory.CreateDirectory(this_TestCaseBaselinesDir);
+            this_TestGroupOutputDir = Path.Combine(Path.GetTempPath(), this_TestCaseName);
+            this_TestCaseLogFile = Path.Combine(this_TestGroupOutputDir, $"{testCaseName}.log");
+            this_TestCaseOutputDir = Path.Combine(this_TestGroupOutputDir, testCaseName);
+            FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);
+            Directory.CreateDirectory(this_TestCaseOutputDir);
+            File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, "Program.cs"), Path.Combine(this_TestCaseOutputDir, "Program.cs"), true);
+            File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, "Directory.Build.props"), Path.Combine(this_TestCaseOutputDir, $"Directory.Build.props"), true);
+            File.Copy(Path.Combine(g_TestCasesDir, this_TestCaseName, testCaseName, $"{testCaseName}.csproj"), Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), true);
+            
+            this_TestCaseProject = MSBuildProj.FromPathAsync(Path.Combine(this_TestCaseOutputDir, $"{testCaseName}.csproj"), null, CancellationToken.None).Result;
+
+            this_FixupUtil = new FixupUtil();
+            this_FixupUtil.Init(g_TestResultsDir, g_TestCasesDir, this_TestCaseOutputDir, g_ServiceUrl, g_ServiceId, g_RepositoryRoot);
+
+            var uri = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
+            var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
+            var options = $"{uri} -nl --outputDir {outDir}";
+
+            TestGlobalSvcutil(options, expectSuccess: true);
         }
     }
 }
