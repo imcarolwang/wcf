@@ -864,7 +864,6 @@ namespace System.ServiceModel.Description
                         {
                             if (include.Schema != null)
                             {
-                                Console.WriteLine("DEBUG: Adding Included Schema: " + include.Schema.TargetNamespace);
                                 schemaSet.Add(include.Schema);
                             }
                         }
@@ -1924,7 +1923,7 @@ namespace System.ServiceModel.Description
                     options = new XmlSerializerImportOptions((CodeCompileUnit)compileUnit);
                     importer.State.Add(typeof(XmlSerializerImportOptions), options);
                 }
-                WsdlNS.WebReferenceOptions webReferenceOptions = options.WebReferenceOptions;
+                CodeGenerationOptions codeGenerationOptions = options.CodeGenerationOptions;
                 _codeProvider = options.CodeProvider;
 
                 _encodedSchemas = new XmlSchemas();
@@ -1936,20 +1935,13 @@ namespace System.ServiceModel.Description
                 //SchemaImporter.ctor is not thread safe: MB49115, VSWhidbey580396
                 lock (s_schemaImporterLock)
                 {
-                    _xmlImporter = new XmlSchemaImporter(_literalSchemas, webReferenceOptions.CodeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
+                    _xmlImporter = new XmlSchemaImporter(_literalSchemas, codeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
                 }
 
-                if (webReferenceOptions != null)
-                {
-                    foreach (string extTypeName in webReferenceOptions.SchemaImporterExtensions)
-                    {
-                        _xmlImporter.Extensions.Add(extTypeName, Type.GetType(extTypeName, true /*throwOnError*/));
-                    }
-                }
                 //SchemaImporter.ctor is not thread safe: MB49115, VSWhidbey580396
                 lock (s_schemaImporterLock)
                 {
-                    _soapImporter = new SoapSchemaImporter(_encodedSchemas, webReferenceOptions.CodeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
+                    _soapImporter = new SoapSchemaImporter(_encodedSchemas, codeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
                 }
                 _xmlSerializerOperationGenerator = new XmlSerializerOperationGenerator(options);
             }

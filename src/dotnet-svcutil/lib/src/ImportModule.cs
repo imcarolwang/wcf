@@ -379,17 +379,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             private static void AddStateForXmlSerializerImport(CommandProcessorOptions options, WsdlImporter importer, CodeCompileUnit codeCompileUnit)
             {
-                XmlSerializerImportOptions importOptions = new XmlSerializerImportOptions(codeCompileUnit)
-                {
-                    WebReferenceOptions = new WsdlNS.WebReferenceOptions()
-                };
-                importOptions.WebReferenceOptions.CodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
+                XmlSerializerImportOptions importOptions = new XmlSerializerImportOptions(codeCompileUnit);
+                importOptions.CodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
                 if (options.EnableDataBinding == true)
-                    importOptions.WebReferenceOptions.CodeGenerationOptions |= CodeGenerationOptions.EnableDataBinding;
+                    importOptions.CodeGenerationOptions |= CodeGenerationOptions.EnableDataBinding;
 
                 // Enable a minimal schema importer extension for DataSet/DataTable.
                 // This avoids generating placeholder IXmlSerializable + ArrayOfXElement types for common DataSet wrapper patterns.
                 importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
+
+                // This avoids generating placeholder IXmlSerializable + ArrayOfXElement types for common DataSet wrapper patterns.
+                importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
+
 
                 importOptions.CodeProvider = options.CodeProvider;
 

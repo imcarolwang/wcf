@@ -70,7 +70,7 @@ namespace System.ServiceModel.Description
                 if (_xmlExporter == null)
                 {
                     _xmlExporter = new XmlCodeExporter(_codeNamespace, _options.CodeCompileUnit, _options.CodeProvider,
-                        _options.WebReferenceOptions.CodeGenerationOptions, null);
+                        _options.CodeGenerationOptions, null);
                 }
                 return _xmlExporter;
             }
@@ -83,7 +83,7 @@ namespace System.ServiceModel.Description
                 if (_soapExporter == null)
                 {
                     _soapExporter = new SoapCodeExporter(_codeNamespace, _options.CodeCompileUnit, _options.CodeProvider,
-                        _options.WebReferenceOptions.CodeGenerationOptions, null);
+                        _options.CodeGenerationOptions, null);
                 }
                 return _soapExporter;
             }
