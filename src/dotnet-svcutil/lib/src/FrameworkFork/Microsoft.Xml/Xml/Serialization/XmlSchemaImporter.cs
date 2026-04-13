@@ -1855,6 +1855,7 @@ namespace Microsoft.Xml.Serialization
             if (content is XmlSchemaSimpleTypeRestriction)
             {
                 XmlSchemaSimpleTypeRestriction restriction = (XmlSchemaSimpleTypeRestriction)content;
+                int enumIndex = 0;
                 for (int i = 0; i < restriction.Facets.Count; i++)
                 {
                     object facet = restriction.Facets[i];
@@ -1869,8 +1870,9 @@ namespace Microsoft.Xml.Serialization
                     string constantName = CodeIdentifier.MakeValid(enumeration.Value);
                     constant.Name = constants.AddUnique(constantName, constant);
                     constant.XmlName = enumeration.Value;
-                    long defaultValue = isList ? (1L << i) : i;
+                    long defaultValue = isList ? (1L << enumIndex) : enumIndex;
                     constant.Value = TryGetDataContractEnumValue(enumeration.Annotation, out long enumValue) ? enumValue : defaultValue;
+                    enumIndex++;
                 }
             }
             enumMapping.Constants = (ConstantMapping[])constants.ToArray(typeof(ConstantMapping));

@@ -639,6 +639,7 @@ namespace Microsoft.Xml.Serialization
                 throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEnumContent, dataType.Content.GetType().Name, identifier));
 
             XmlSchemaSimpleTypeRestriction restriction = (XmlSchemaSimpleTypeRestriction)dataType.Content;
+            int enumIndex = 0;
 
             for (int i = 0; i < restriction.Facets.Count; i++)
             {
@@ -649,8 +650,9 @@ namespace Microsoft.Xml.Serialization
                 string constantName = CodeIdentifier.MakeValid(enumeration.Value);
                 constant.Name = constants.AddUnique(constantName, constant);
                 constant.XmlName = enumeration.Value;
-                long defaultValue = isList ? (1L << i) : i;
+                long defaultValue = isList ? (1L << enumIndex) : enumIndex;
                 constant.Value = TryGetDataContractEnumValue(enumeration.Annotation, out long enumValue) ? enumValue : defaultValue;
+                enumIndex++;
             }
             enumMapping.Constants = (ConstantMapping[])constants.ToArray(typeof(ConstantMapping));
             if (isList && enumMapping.Constants.Length > 63)
