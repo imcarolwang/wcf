@@ -1938,6 +1938,11 @@ namespace System.ServiceModel.Description
                     _xmlImporter = new XmlSchemaImporter(_literalSchemas, codeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
                 }
 
+                foreach (string extTypeName in options.SchemaImporterExtensions)
+                {
+                    _xmlImporter.Extensions.Add(extTypeName, Type.GetType(extTypeName, true /*throwOnError*/));
+                }
+
                 //SchemaImporter.ctor is not thread safe: MB49115, VSWhidbey580396
                 lock (s_schemaImporterLock)
                 {

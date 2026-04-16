@@ -5,6 +5,7 @@
 namespace System.ServiceModel.Channels
 {
     using System;
+    using System.Collections.Specialized;
     using Microsoft.CodeDom.Compiler;
     using Microsoft.CodeDom;
     using System.Collections;
@@ -25,6 +26,7 @@ namespace System.ServiceModel.Channels
         private CodeDomProvider _codeProvider;
         private string _clrNamespace;
         private CodeGenerationOptions _codeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
+        private StringCollection _schemaImporterExtensions;
 
         public XmlSerializerImportOptions()
             : this(new CodeCompileUnit())
@@ -67,6 +69,19 @@ namespace System.ServiceModel.Channels
         {
             get { return _codeGenerationOptions; }
             set { _codeGenerationOptions = value; }
+        }
+
+        public StringCollection SchemaImporterExtensions
+        {
+            get
+            {
+                if (_schemaImporterExtensions == null)
+                {
+                    _schemaImporterExtensions = new StringCollection();
+                }
+
+                return _schemaImporterExtensions;
+            }
         }
     }
 }

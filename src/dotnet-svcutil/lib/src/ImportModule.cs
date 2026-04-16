@@ -386,11 +386,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 // Enable a minimal schema importer extension for DataSet/DataTable.
                 // This avoids generating placeholder IXmlSerializable + ArrayOfXElement types for common DataSet wrapper patterns.
-                importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
-
-                // This avoids generating placeholder IXmlSerializable + ArrayOfXElement types for common DataSet wrapper patterns.
-                importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
-
+                importOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
 
                 importOptions.CodeProvider = options.CodeProvider;
 
