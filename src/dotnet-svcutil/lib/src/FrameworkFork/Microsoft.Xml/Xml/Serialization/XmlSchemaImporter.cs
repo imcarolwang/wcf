@@ -1360,20 +1360,31 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
             return arrayAccessor;
         }
 
+        // Extension and restriction are explicit inheritance; implicit anyType is not.
+        private static bool HasExplicitContentModelInheritance(XmlSchemaType type)
+        {
+            if (!(type is XmlSchemaComplexType complexType) || complexType.ContentModel == null)
+            {
+                return false;
+            }
+
+            XmlSchemaContent content = complexType.ContentModel.Content;
+            return content is XmlSchemaComplexContentExtension
+                || content is XmlSchemaSimpleContentExtension
+                || content is XmlSchemaComplexContentRestriction
+                || content is XmlSchemaSimpleContentRestriction;
+        }
+
         private ArrayMapping ImportArrayMapping(XmlSchemaType type, string identifier, string ns, bool repeats)
         {
             if (!(type is XmlSchemaComplexType)) return null;
             // [Fix: Polymorphism/Inheritance]
-            // We only disqualify the type from being an Array if it *explicitly* extends another type via ContentModel.
-            // Implicit inheritance from 'anyType' (where BaseXmlSchemaType is non-null but ContentModel is null) 
-            // is standard for Arrays and must be allowed.
-            if (type is XmlSchemaComplexType complexType && complexType.ContentModel != null)
+            // We only disqualify the type from special array handling if it explicitly derives from another type
+            // through a content model. Implicit inheritance from 'anyType' (where BaseXmlSchemaType is non-null but
+            // ContentModel is null) is standard and must remain eligible for special handling.
+            if (HasExplicitContentModelInheritance(type))
             {
-                 if (complexType.ContentModel.Content is XmlSchemaComplexContentExtension || 
-                     complexType.ContentModel.Content is XmlSchemaSimpleContentExtension)
-                 {
-                     return null;
-                 }
+                return null;
             }
 
             if (IsMixed(type)) return null;
@@ -1479,7 +1490,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.XmlSerializer
         private SpecialMapping ImportAnyMapping(XmlSchemaType type, string identifier, string ns, bool repeats)
         {
             if (type == null) return null;
-            if (type.BaseXmlSchemaType != null) return null;
+            // BaseXmlSchemaType != null is too broad here: under System.Xml.Schema it can represent either
+            // an implicit xsd:anyType base or an explicit schema derivation. For special importer handling,
+            // only explicit content-model inheritance (extension/restriction) should disqualify the type.
+            if (HasExplicitContentModelInheritance(type)) return null;
 
             bool mixed = IsMixed(type);
             TypeItems items = GetTypeItems(type);
