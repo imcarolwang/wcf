@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
   <!-- $(RepositoryRoot)Directory.Build.props automatically imported by Microsoft.Common.props -->
   <PropertyGroup>
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
     <NoWarn>$(NoWarn)NETSDK1023</NoWarn>
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>

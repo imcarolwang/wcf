@@ -63,6 +63,14 @@
   <ItemGroup Condition="Exists('README.md')" >
     <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
+
+  <Target Name="RemoveXunitV3AssertAotReference" BeforeTargets="CoreCompile" Condition="'$(IsTestProject)' == 'true'">
+    <ItemGroup>
+      <ReferencePath Remove="@(ReferencePath)" Condition="$([System.String]::Copy('%(ReferencePath.Identity)').EndsWith('xunit.v3.assert.aot.dll', System.StringComparison.OrdinalIgnoreCase))" />
+      <ReferencePathWithRefAssemblies Remove="@(ReferencePathWithRefAssemblies)" Condition="$([System.String]::Copy('%(ReferencePathWithRefAssemblies.Identity)').EndsWith('xunit.v3.assert.aot.dll', System.StringComparison.OrdinalIgnoreCase))" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="$([System.String]::Copy('%(ReferenceCopyLocalPaths.Identity)').EndsWith('xunit.v3.assert.aot.dll', System.StringComparison.OrdinalIgnoreCase))" />
+    </ItemGroup>
+  </Target>
   
   <Import Project="eng\RuntimePackages.targets" Condition="'$(StrongNameKeyId)' == 'Microsoft'" />
 </Project>
